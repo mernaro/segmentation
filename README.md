@@ -1,7 +1,8 @@
-# Unfolding: Super Resolution and Image Segmentation
+# Unfolding: Image Segmentation
 
 This project is part of our Master’s 2 program. It explores **super-resolution** and **image segmentation** using 
-**unfolding methods** and implements a **Mumford–Shah functional** approach.
+**unfolding methods** and implements a **Mumford–Shah functional** approach. This repository is dedicated for the segmentation aspect.
+
 
 ---
 ## Project Structure
@@ -29,7 +30,7 @@ project/
 1. Clone the repository:
 
    ```bash
-   git clone https://github.com/mernaro/unfolding.git
+   git clone https://github.com/mernaro/segmentation.git
    ```
 
 2. Install dependencies:
