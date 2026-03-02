@@ -25,24 +25,17 @@ class TeethDataset(Dataset):
         
         return image, mask
 
-def prepare_dataloaders(hf_dataset, batch_size=4):
+def prepare_dataloaders(hf_dataset, batch_size=4, train_ratio=0.8):
+    # Création de l'objet Dataset global
     full_dataset = TeethDataset(hf_dataset)
-    total = len(full_dataset) # 116
     
-    # On définit les tailles exactes
-    val_size = 10
-    test_size = 10
-    train_size = total - val_size - test_size # 96
+    # Split Train / Validation
+    train_size = int(train_ratio * len(full_dataset))
+    val_size = len(full_dataset) - train_size
+    train_ds, val_ds = random_split(full_dataset, [train_size, val_size])
     
-    # Split
-    train_ds, val_ds, test_ds = random_split(
-        full_dataset, 
-        [train_size, val_size, test_size],
-        generator=torch.Generator().manual_seed(42) # Pour avoir toujours les mêmes images
-    )
-    
+    # Création des Loaders
     train_loader = DataLoader(train_ds, batch_size=batch_size, shuffle=True)
     val_loader = DataLoader(val_ds, batch_size=batch_size, shuffle=False)
-    test_loader = DataLoader(test_ds, batch_size=batch_size, shuffle=False)
     
-    return train_loader, val_loader, test_loader
+    return train_loader, val_loader
