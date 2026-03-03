@@ -1,9 +1,3 @@
-C'est une excellente remarque. Pour que ton projet soit flexible, il faut que models.py puisse gérer les deux cas : un modèle "vierge" pour l'entraînement à partir de zéro, et un modèle capable de charger tes poids sauvegardés dans le dossier weights.
-
-Voici comment tu devrais structurer ton fichier src/models.py sur ton PC (puis le push sur Git) pour que ce soit propre :
-
-1. Mise à jour de src/models.py
-Python
 import torch
 import segmentation_models_pytorch as smp
 import os
