@@ -18,24 +18,36 @@ def plot_history(history, title="Training History"):
     
     plt.show()
 
-def visualize_results(model, test_loader, device, n=3):
+def visualize_results(model, test_loader, device, n_images=5):
     model.eval()
-    imgs, masks = next(iter(test_loader))
-    imgs, masks = imgs[:n].to(device), masks[:n]
-    
+    images, masks = next(iter(test_loader)) # On prend un batch du test_loader
+    images = images[:n_images].to(device)
+    masks = masks[:n_images].to(device)
+
     with torch.no_grad():
-        preds = torch.sigmoid(model(imgs)) # On applique sigmoid pour l'affichage
+        outputs = model(images)
+        preds = (outputs > 0.5).float() # Seuil de binarisation
+
+    plt.figure(figsize=(15, n_images * 3))
     
-    plt.figure(figsize=(12, n*4))
-    for i in range(n):
-        plt.subplot(n, 3, i*3 + 1)
-        plt.imshow(imgs[i].cpu().permute(1, 2, 0))
-        plt.title("Image")
-        plt.subplot(n, 3, i*3 + 2)
-        plt.imshow(masks[i][0].cpu(), cmap='gray')
-        plt.title("Masque Réel")
-        plt.subplot(n, 3, i*3 + 3)
-        plt.imshow(preds[i][0].cpu() > 0.5, cmap='gray')
-        plt.title("Prédiction")
+    for i in range(n_images):
+        # Image originale
+        plt.subplot(n_images, 3, i * 3 + 1)
+        plt.imshow(images[i].cpu().squeeze(), cmap='gray')
+        plt.title("Radiographie (Input)")
+        plt.axis('off')
+
+        # Prédiction
+        plt.subplot(n_images, 3, i * 3 + 2)
+        plt.imshow(preds[i].cpu().squeeze(), cmap='gray')
+        plt.title("Segmentation (Modèle)")
+        plt.axis('off')
+
+        # Vérité terrain
+        plt.subplot(n_images, 3, i * 3 + 3)
+        plt.imshow(masks[i].cpu().squeeze(), cmap='gray')
+        plt.title("Masque Réel (Ground Truth)")
+        plt.axis('off')
+
     plt.tight_layout()
     plt.show()
