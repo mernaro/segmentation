@@ -17,9 +17,12 @@ class TeethDataset(Dataset):
 
     def __getitem__(self, idx):
         item = self.dataset[idx]
-        image = item['image'].convert("RGB") # On s'assure d'avoir 3 canaux
-        mask = item['label'].convert("L")    # Masque en niveaux de gris (1 canal)
         
+        # MODIFICATION ICI : "L" au lieu de "RGB" pour n'avoir qu'un canal (Gris)
+        image = item['image'].convert("L") 
+        mask = item['label'].convert("L") 
+        
+        # Le reste ne bouge pas
         image = self.transform(image)
         mask = self.transform(mask)
         
