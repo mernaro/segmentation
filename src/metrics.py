@@ -34,3 +34,27 @@ def calculate_metrics(model, x_test, y_test, device="cuda"):
             iou_scores.append(iou.item())
             
     return np.mean(dice_scores), np.mean(iou_scores)
+def evaluate_model(model, loader, device):
+    model.eval()
+    dice_scores = []
+    iou_scores = []
+    
+    with torch.no_grad():
+        for images, masks in loader:
+            images, masks = images.to(device), masks.to(device)
+            preds = model(images)
+            preds = (preds > 0.5).float()
+            
+            for i in range(images.size(0)):
+                pred = preds[i]
+                mask = masks[i]
+                
+                intersection = (pred * mask).sum()
+                dice = (2. * intersection) / (pred.sum() + mask.sum() + 1e-8)
+                union = (pred + mask).clamp(0, 1).sum()
+                iou = intersection / (union + 1e-8)
+                
+                dice_scores.append(dice.item())
+                iou_scores.append(iou.item())
+                
+    return np.mean(dice_scores), np.mean(iou_scores)
