@@ -1,4 +1,6 @@
 import matplotlib.pyplot as plt
+import torch
+import numpy as np
 
 def plot_history(history, title="Training History"):
     fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(15, 5))
