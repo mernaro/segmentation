@@ -34,6 +34,7 @@ def calculate_metrics(model, x_test, y_test, device="cuda"):
             iou_scores.append(iou.item())
             
     return np.mean(dice_scores), np.mean(iou_scores)
+    
 def evaluate_model(model, loader, device):
     model.eval()
     dice_scores = []
