@@ -12,7 +12,7 @@ def get_model(mode="vanilla", model_path=None, device="cpu"):
             classes=1,
             activation='sigmoid'
         )
-        print("🏗️ Modèle Vanilla (1 canal) initialisé.")
+        print(" Modèle Vanilla (1 canal) initialisé.")
 
     elif mode == "pretrained":
         # 1. On crée d'abord le modèle standard en 3 canaux avec ImageNet
@@ -45,11 +45,11 @@ def get_model(mode="vanilla", model_path=None, device="cpu"):
         # On remplace l'ancienne couche par la nouvelle
         model.encoder.conv1 = new_conv
         
-        print("🚀 Modèle Pretrained ADAPTÉ (1 canal + poids ImageNet moyennés) initialisé.")
+        print(" Modèle Pretrained ADAPTÉ (1 canal + poids ImageNet moyennés) initialisé.")
 
     # 2. Chargement des poids (Inference)
     if model_path and os.path.exists(model_path):
         model.load_state_dict(torch.load(model_path, map_location=device))
-        print(f"✅ Poids chargés depuis : {model_path}")
+        print(f" Poids chargés depuis : {model_path}")
 
     return model.to(device)
