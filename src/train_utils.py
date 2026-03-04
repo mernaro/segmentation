@@ -53,14 +53,6 @@ def train_model(model, train_loader, val_loader, criterion, optimizer, device, e
         
     return history
 
-C'est une excellente idée. En uniformisant les deux fonctions, ton code sera beaucoup plus propre et tu pourras utiliser les mêmes outils de visualisation (plot_history) pour voir si ton modèle progresse bien dans sa compréhension des images de dents.
-
-Voici la version "miroir" de train_model pour la reconstruction à mettre dans ton fichier src/train.py.
-
-1. Modification de src/train.py
-J'ai adapté la fonction pour qu'elle calcule la perte sur l'image elle-même (imgs vs preds) et j'ai retiré l'accuracy (qui n'a pas de sens pour des pixels continus) pour ne garder que la progression de la Loss (MSE).
-
-Python
 import torch
 from tqdm import tqdm
 
