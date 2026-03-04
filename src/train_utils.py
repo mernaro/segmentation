@@ -53,34 +53,16 @@ def train_model(model, train_loader, val_loader, criterion, optimizer, device, e
         
     return history
 
-def train_reconstruction(model, train_loader, val_loader, criterion, optimizer, device, epochs=30):
-    """
-    Spécifique à la Phase 0 : Reconstruction X -> X
-    """
-    history = {"train_loss": [], "val_loss": []}
-    pbar = tqdm(range(epochs), desc="Reconstruction (Phase 0)")
-
-    for epoch in pbar:
-        model.train()
-        t_loss = 0
-        for imgs, _ in train_loader: # On ignore les masques ici
-            imgs = imgs.to(device)
-            optimizer.zero_grad()
-            output = model(imgs)
-            loss = criterion(output, imgs) # On compare l'image à elle-même
-            loss.backward()
-            optimizer.step()
-            t_loss += loss.item()
-
-        model.eval()
-        v_loss = 0
-        with torch.no_grad():
-            for imgs, _ in val_loader:
-                imgs = imgs.to(device)
-                v_loss += criterion(model(imgs), imgs).item()
-
-        history["train_loss"].append(t_loss / len(train_loader))
-        history["val_loss"].append(v_loss / len(val_loader))
-        pbar.set_postfix({"MSE": f"{t_loss/len(train_loader):.4f}"})
-
-    return history
+def train_reconstruction(model, loader, criterion, optimizer, device):
+    model.train()
+    total_loss = 0
+    for images, _ in loader: # On ignore les masques ici
+        images = images.to(device)
+        optimizer.zero_grad()
+        outputs = model(images)
+        # La cible est l'image d'entrée elle-même !
+        loss = criterion(outputs, images) 
+        loss.backward()
+        optimizer.step()
+        total_loss += loss.item()
+    return total_loss / len(loader)
