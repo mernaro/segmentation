@@ -3,6 +3,7 @@
 This project is part of our Master’s 2 program. It explores **super-resolution** and **image segmentation** using 
 **unfolding methods** and implements a **Mumford–Shah functional** approach. This repository is dedicated for the segmentation aspect.
 
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://drive.google.com/file/d/1tcbo9iRXCoZ3Y_pCTa0znKA23vmVdUZy/view?usp=sharing)
 
 ---
 ## Project Structure
